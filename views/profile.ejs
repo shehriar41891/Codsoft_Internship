@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #007BFF;
+            text-align: center;
+        }
+
+        h2 {
+            color: #343a40;
+        }
+
+        p,
+        li {
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            color: #007BFF;
+            font-size: 1.5em;
+        }
+
+        .card-text {
+            color: #6c757d;
+        }
+
+        .course-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .progress-container {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Profile</h1>
+        <p><strong>Name:</strong>
+            <%= user.fullname %>
+        </p>
+        <p><strong>Cellphone Number:</strong>
+            <%= user.cellNumber %>
+        </p>
+        <p><strong>Email Address:</strong>
+            <%= user.email %>
+        </p>
+
+        <h2>Enrolled Courses</h2>
+        <% if (user.refrence && user.refrence.length> 0) { %>
+            <% user.refrence.forEach(course=> { %>
+                <div class="card">
+                    <img src="<%= course.image %>" alt="<%= course.name %>" style="width: 400px; height: auto;" class="course-image">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= course.name %>
+                        </h5>
+                        <p class="card-text">
+                            <%= course.Description %>
+                        </p>
+                        <a href="/video-of-the-course/<%= course._id %>" class="btn btn-primary">Visit Video
+                            Lectures</a>
+                    </div>
+                    <div class="progress-container">
+                        <p style="color: blue; font-size: 20px; margin-bottom: 0;">Progress</p>
+                        <div class="progress-bar" role="progressbar"
+                            style="width: <%= (course.VideosWatched / 4) * 100 %>%;"
+                            aria-valuenow="<%= (course.VideosWatched / 4) * 100 %>" aria-valuemin="0"
+                            aria-valuemax="100">
+                            <%= (course.VideosWatched / 4) * 100 %>%
+                        </div>
+                    </div>
+                    <% if ((course.VideosWatched / 4) * 100 === 100) { %>
+                        <a href="/generate-certificate/<%= course._id %>" class="btn btn-success">Generate Certificate</a>
+                    <% } %>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No enrolled courses</p>
+        <% } %>
+    </div>
+
+    <!-- Add the link to Bootstrap JavaScript and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
